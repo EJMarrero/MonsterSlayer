@@ -73,7 +73,7 @@ import { eventBus } from "../main.ts";
       playerMana: 100,
       gameIsRunning: false,
       currentPlayerWeapon: [],
-      currentDamageBonus: Number,
+      /*currentDamageBonus: Number,*/
       armorDefense: '',
       turns: [{id: '', isPlayer: false, text: ''}]
     };
@@ -95,7 +95,7 @@ import { eventBus } from "../main.ts";
     },
     attack: function(){
       this.checkWin();
-      var damage = this.calculateDamage(3, 10);
+      var damage = this.calculateDamage(3, 10, this.currentPlayerWeapon);
       this.turns.unshift({
         isPlayer: true,
         text: 'El jugador ataca al Monstruo por ' + damage
@@ -115,7 +115,7 @@ import { eventBus } from "../main.ts";
         this.monsterAttack();
         this.manaRegenerate();
       } else {
-        var damage = this.calculateDamage(10, 20);
+        var damage = this.calculateDamage(10, 20, this.currentPlayerWeapon);
         this.playerMana -= 40
         this.monsterHealth -= damage;
         this.turns.unshift({
@@ -156,12 +156,10 @@ import { eventBus } from "../main.ts";
       this.gameIsRunning = false;
       alert('Te has rendido...');
     },
-    calculateDamage : function(min, max){
-      console.log('Daño actual del arma', this.currentPlayerWeapon)
-      console.log('min default', min);
-      console.log('max default' ,max);
-      min += this.currentPlayerWeapon;
-      max += this.currentPlayerWeapon;
+    calculateDamage : function(min, max, currentDamageBonus){
+      
+      min += currentDamageBonus;
+      max += currentDamageBonus;
       console.log('min', min);
       console.log('max' ,max);
       var totalDamage = Math.max(Math.floor(Math.random() * max)+1, min)
@@ -173,7 +171,8 @@ import { eventBus } from "../main.ts";
     },
     monsterAttack : function (){
       this.checkWin();
-      var damage = this.calculateDamage(5, 12);
+      var currentMonsterDamageBonus = 0;
+      var damage = this.calculateDamage(5, 12, currentMonsterDamageBonus);
       this.turns.unshift({
         isPlayer: false,
         text: 'El Monstruo ataca al Jugador por ' + damage
@@ -205,7 +204,7 @@ import { eventBus } from "../main.ts";
   created() {
     eventBus.$on('WeaponChanged', (weapon) => {
       this.currentPlayerWeapon = weapon;
-      this.currentDamageBonus = weapon.damage;
+      /*this.currentDamageBonus = weapon.damage;*/
     });
   }
 });
