@@ -17,13 +17,13 @@
     <v-content>
       <v-container grid-list-md text-xs-center>
         <v-layout row wrap>
-          <v-flex xs6>
+          <v-flex xs12 md6>
             <Inventory
-              
-              @WeaponChanged="weaponsList = $event"  
+              @WeaponChanged="weaponsList = $event"
+              @ArmorChanged="armorsList = $event"  
             />
           </v-flex>
-          <v-flex xs6>
+          <v-flex xs12 md6>
             <HelloWorld/>
           </v-flex>  
         </v-layout>
@@ -46,7 +46,8 @@ export default Vue.extend( {
   },
   data () {
     return {
-      weaponsList: []
+      weaponsList: [],
+      armorsList: []
     }
   },
 });

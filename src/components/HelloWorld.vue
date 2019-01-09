@@ -2,7 +2,11 @@
   <v-container>
     <section class="row">
         <div class="small-6 columns">
-            <h1 class="text-center">JUGADOR {{currentPlayerWeapon}} </h1>
+            <h1 class="text-center">
+              JUGADOR 
+              Atk - {{currentPlayerWeapon}} 
+              Df - {{ currentPlayerArmor}} 
+            </h1>
             <div class="healthbar">
                 <div 
                   class="healthbar text-center" 
@@ -38,7 +42,7 @@
             <button id="start-game" @click="startGame">NUEVA PARTIDA</button>
         </div>
     </section>
-    <section class="row controls" v-else="gameIsRunning">
+    <section class="row controls" v-else>
         <div class="small-12 columns">
             <button @click="attack" id="attack">ATAQUE</button>
             <button @click="specialAttack" id="special-attack">ATAQUE ESPECIAL</button>
@@ -65,7 +69,6 @@ import Vue from 'vue';
 import { eventBus } from "../main.ts";
 
   export default Vue.extend({
-    props: ['weaponsList'],
     data() {
     return{
       playerHealth: 100,
@@ -73,6 +76,7 @@ import { eventBus } from "../main.ts";
       playerMana: 100,
       gameIsRunning: false,
       currentPlayerWeapon: [],
+      currentPlayerArmor: [],
       /*currentDamageBonus: Number,*/
       armorDefense: '',
       turns: [{id: '', isPlayer: false, text: ''}]
@@ -130,9 +134,10 @@ import { eventBus } from "../main.ts";
     },
     heal: function(){
       let heal;
+      let currentBonusHeal = 0;
       if(this.playerMana > 20){
         if(this.playerHealth <= 90){
-          heal = this.calculateDamage(4, 20);
+          heal = this.calculateDamage(4, 20, currentBonusHeal);
           this.playerHealth += heal;
         } else {
           this.playerHealth = 100;
@@ -206,6 +211,9 @@ import { eventBus } from "../main.ts";
       this.currentPlayerWeapon = weapon;
       /*this.currentDamageBonus = weapon.damage;*/
     });
+    eventBus.$on('ArmorChanged', (armor) => {
+      this.currentPlayerArmor = armor;
+    })
   }
 });
 </script>

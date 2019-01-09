@@ -21,10 +21,17 @@
                   item-text="name"
                   item-value="damage"
                   label="Armas" 
-                  @change="onWeaponChanged($event)"></v-select>
+                  @change="onWeaponChanged($event)">
+                </v-select>
               </v-card-actions>
               <v-card-actions v-else-if="card.title === 'Armaduras'">
-                <v-select :items="armaduras" label="Armaduras"></v-select>
+                <v-select 
+                  :items="armaduras"
+                  item-text="name" 
+                  item-value="defense"
+                  label="Armaduras"
+                  @change="onArmorChanged($event)">
+                </v-select>
               </v-card-actions>
               <v-card-actions v-else-if="card.title === 'YOU'">
 
@@ -67,21 +74,35 @@ export default Vue.extend({
           {
             id: 0,
             name: 'Espada Corta',
-            damage: 10
+            damage: 5
           },
           {
             id: 1,
             name: 'Espada Larga',
-            damage: 20
+            damage: 10
           }
         ],
-      armaduras: ["Cuero", "Coraza", "Armadura completa"]
+      armaduras: [
+        {
+          id: 0,
+          name: 'Cuero',
+          defense: 3
+        },
+        {
+          id: 1,
+          name: 'Coraza',
+          defense: 8
+        },
+      ]
     };
   },
   methods: {
     onWeaponChanged(evt){
       /*this.$emit('WeaponChanged', evt);*/
       eventBus.$emit('WeaponChanged', evt);
+    },
+    onArmorChanged(evt){
+      eventBus.$emit('ArmorChanged', evt);
     }
   },
   watch:{
